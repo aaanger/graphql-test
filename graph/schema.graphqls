@@ -1,0 +1,100 @@
+type User {
+  id: ID!
+  username: String!
+  email: String!
+}
+
+type AuthRes {
+  user: User!
+  token: String!
+}
+
+type Post {
+  id: ID!
+  user: User!
+  title: String!
+  body: String!
+  allowComments: Boolean!
+  createdAt: Timestamp!
+  comments(first: Int, last: Int, after: String, before: String): CommentConnection
+}
+
+type Comment {
+  id: ID!
+  postID: ID!
+  userID: ID!
+  body: String!
+  createdAt: Timestamp!
+  parentCommentID: ID
+  replies(first: Int, last: Int, after: String, before: String): CommentConnection
+}
+
+type CommentEdge {
+  cursor: String!
+  node: Comment!
+}
+
+type CommentConnection {
+  edges: [CommentEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PageInfo {
+  startCursor: String
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPrevPage: Boolean!
+}
+
+input RegisterReq {
+  email: String!
+  username: String!
+  password: String!
+}
+
+input LoginReq {
+  email: String!
+  password: String!
+}
+
+input CreatePostReq {
+  title: String!
+  body: String!
+  allowComments: Boolean!
+}
+
+input UpdatePostReq {
+  title: String
+  body: String
+  allowComments: Boolean
+}
+
+input CreateCommentReq {
+  postID: ID!
+  parentCommentID: ID
+  body: String!
+}
+
+input UpdateCommentReq {
+  id: ID!
+  body: String!
+}
+
+type Query {
+  getPostsByUserID(userID: ID!): [Post!]!
+  getPostByID(id: ID!): Post!
+  getCommentsByPostID(postID: ID!, first: Int, last: Int, after: String, before: String): CommentConnection!
+}
+
+type Mutation {
+  register(req: RegisterReq!): AuthRes!
+  login(req: LoginReq!): AuthRes!
+  createPost(req: CreatePostReq!): Post!
+  updatePost(postID: Int!, req: UpdatePostReq!): Post!
+  deletePost(postID: Int!): String!
+  createComment(req: CreateCommentReq!): Comment!
+  updateComment(req: UpdateCommentReq!): Comment!
+  deleteComment(commentID: Int!): String!
+}
+
+scalar Timestamp
