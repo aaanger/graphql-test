@@ -4,8 +4,8 @@ package mocks
 
 import (
 	context "context"
+	model2 "github.com/aaanger/graphql-test/internal/graph/model"
 
-	model "github.com/aaanger/graphql-test/graph/model"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -15,34 +15,34 @@ type IUserRepository struct {
 }
 
 // Login provides a mock function with given fields: ctx, req
-func (_m *IUserRepository) Login(ctx context.Context, req *model.LoginReq) (*model.User, string, error) {
+func (_m *IUserRepository) Login(ctx context.Context, req *model2.LoginReq) (*model2.User, string, error) {
 	ret := _m.Called(ctx, req)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Login")
 	}
 
-	var r0 *model.User
+	var r0 *model2.User
 	var r1 string
 	var r2 error
-	if rf, ok := ret.Get(0).(func(context.Context, *model.LoginReq) (*model.User, string, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *model2.LoginReq) (*model2.User, string, error)); ok {
 		return rf(ctx, req)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *model.LoginReq) *model.User); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *model2.LoginReq) *model2.User); ok {
 		r0 = rf(ctx, req)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*model.User)
+			r0 = ret.Get(0).(*model2.User)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *model.LoginReq) string); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *model2.LoginReq) string); ok {
 		r1 = rf(ctx, req)
 	} else {
 		r1 = ret.Get(1).(string)
 	}
 
-	if rf, ok := ret.Get(2).(func(context.Context, *model.LoginReq) error); ok {
+	if rf, ok := ret.Get(2).(func(context.Context, *model2.LoginReq) error); ok {
 		r2 = rf(ctx, req)
 	} else {
 		r2 = ret.Error(2)
@@ -52,34 +52,34 @@ func (_m *IUserRepository) Login(ctx context.Context, req *model.LoginReq) (*mod
 }
 
 // Register provides a mock function with given fields: ctx, req
-func (_m *IUserRepository) Register(ctx context.Context, req *model.RegisterReq) (*model.User, string, error) {
+func (_m *IUserRepository) Register(ctx context.Context, req *model2.RegisterReq) (*model2.User, string, error) {
 	ret := _m.Called(ctx, req)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Register")
 	}
 
-	var r0 *model.User
+	var r0 *model2.User
 	var r1 string
 	var r2 error
-	if rf, ok := ret.Get(0).(func(context.Context, *model.RegisterReq) (*model.User, string, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *model2.RegisterReq) (*model2.User, string, error)); ok {
 		return rf(ctx, req)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *model.RegisterReq) *model.User); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *model2.RegisterReq) *model2.User); ok {
 		r0 = rf(ctx, req)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*model.User)
+			r0 = ret.Get(0).(*model2.User)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *model.RegisterReq) string); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *model2.RegisterReq) string); ok {
 		r1 = rf(ctx, req)
 	} else {
 		r1 = ret.Get(1).(string)
 	}
 
-	if rf, ok := ret.Get(2).(func(context.Context, *model.RegisterReq) error); ok {
+	if rf, ok := ret.Get(2).(func(context.Context, *model2.RegisterReq) error); ok {
 		r2 = rf(ctx, req)
 	} else {
 		r2 = ret.Error(2)

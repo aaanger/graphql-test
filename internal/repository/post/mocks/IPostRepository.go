@@ -4,8 +4,8 @@ package mocks
 
 import (
 	context "context"
+	model2 "github.com/aaanger/graphql-test/internal/graph/model"
 
-	model "github.com/aaanger/graphql-test/graph/model"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -15,27 +15,27 @@ type IPostRepository struct {
 }
 
 // CreatePost provides a mock function with given fields: ctx, userID, req
-func (_m *IPostRepository) CreatePost(ctx context.Context, userID int, req *model.CreatePostReq) (*model.Post, error) {
+func (_m *IPostRepository) CreatePost(ctx context.Context, userID int, req *model2.CreatePostReq) (*model2.Post, error) {
 	ret := _m.Called(ctx, userID, req)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreatePost")
 	}
 
-	var r0 *model.Post
+	var r0 *model2.Post
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, int, *model.CreatePostReq) (*model.Post, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, int, *model2.CreatePostReq) (*model2.Post, error)); ok {
 		return rf(ctx, userID, req)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, int, *model.CreatePostReq) *model.Post); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, int, *model2.CreatePostReq) *model2.Post); ok {
 		r0 = rf(ctx, userID, req)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*model.Post)
+			r0 = ret.Get(0).(*model2.Post)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, int, *model.CreatePostReq) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, int, *model2.CreatePostReq) error); ok {
 		r1 = rf(ctx, userID, req)
 	} else {
 		r1 = ret.Error(1)
@@ -63,23 +63,23 @@ func (_m *IPostRepository) DeletePost(ctx context.Context, userID int, postID in
 }
 
 // GetAllPostsByUserID provides a mock function with given fields: ctx, userID
-func (_m *IPostRepository) GetAllPostsByUserID(ctx context.Context, userID int) ([]*model.Post, error) {
+func (_m *IPostRepository) GetAllPostsByUserID(ctx context.Context, userID int) ([]*model2.Post, error) {
 	ret := _m.Called(ctx, userID)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetAllPostsByUserID")
 	}
 
-	var r0 []*model.Post
+	var r0 []*model2.Post
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, int) ([]*model.Post, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, int) ([]*model2.Post, error)); ok {
 		return rf(ctx, userID)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, int) []*model.Post); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, int) []*model2.Post); ok {
 		r0 = rf(ctx, userID)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]*model.Post)
+			r0 = ret.Get(0).([]*model2.Post)
 		}
 	}
 
@@ -93,23 +93,23 @@ func (_m *IPostRepository) GetAllPostsByUserID(ctx context.Context, userID int) 
 }
 
 // GetPostByID provides a mock function with given fields: ctx, id
-func (_m *IPostRepository) GetPostByID(ctx context.Context, id int) (*model.Post, error) {
+func (_m *IPostRepository) GetPostByID(ctx context.Context, id int) (*model2.Post, error) {
 	ret := _m.Called(ctx, id)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetPostByID")
 	}
 
-	var r0 *model.Post
+	var r0 *model2.Post
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, int) (*model.Post, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, int) (*model2.Post, error)); ok {
 		return rf(ctx, id)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, int) *model.Post); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, int) *model2.Post); ok {
 		r0 = rf(ctx, id)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*model.Post)
+			r0 = ret.Get(0).(*model2.Post)
 		}
 	}
 
@@ -123,7 +123,7 @@ func (_m *IPostRepository) GetPostByID(ctx context.Context, id int) (*model.Post
 }
 
 // UpdatePost provides a mock function with given fields: ctx, userID, postID, req
-func (_m *IPostRepository) UpdatePost(ctx context.Context, userID int, postID int, req *model.UpdatePostReq) error {
+func (_m *IPostRepository) UpdatePost(ctx context.Context, userID int, postID int, req *model2.UpdatePostReq) error {
 	ret := _m.Called(ctx, userID, postID, req)
 
 	if len(ret) == 0 {
@@ -131,7 +131,7 @@ func (_m *IPostRepository) UpdatePost(ctx context.Context, userID int, postID in
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, int, int, *model.UpdatePostReq) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, int, int, *model2.UpdatePostReq) error); ok {
 		r0 = rf(ctx, userID, postID, req)
 	} else {
 		r0 = ret.Error(0)

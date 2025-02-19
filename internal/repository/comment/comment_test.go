@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/aaanger/graphql-test/graph/model"
+	"github.com/aaanger/graphql-test/internal/graph/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"testing"

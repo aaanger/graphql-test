@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/aaanger/graphql-test/graph/model"
+	model2 "github.com/aaanger/graphql-test/internal/graph/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"testing"
@@ -33,7 +33,7 @@ func TestPostRepositorySuite(t *testing.T) {
 // ==============================================
 
 func (suite *PostRepositorySuite) TestRepository_CreatePostSuccess() {
-	req := &model.CreatePostReq{
+	req := &model2.CreatePostReq{
 		Title:         "test",
 		Body:          "test",
 		AllowComments: true,
@@ -56,7 +56,7 @@ func (suite *PostRepositorySuite) TestRepository_CreatePostSuccess() {
 }
 
 func (suite *PostRepositorySuite) TestRepository_CreatePostEmptyFields() {
-	req := &model.CreatePostReq{
+	req := &model2.CreatePostReq{
 		AllowComments: true,
 	}
 	userID := 1
@@ -84,10 +84,10 @@ func (suite *PostRepositorySuite) TestRepository_GetAllPostsSuccess() {
 
 	posts, err := suite.repo.GetAllPostsByUserID(context.Background(), userID)
 
-	expected := []*model.Post{
+	expected := []*model2.Post{
 		{
 			ID: 1,
-			User: &model.User{
+			User: &model2.User{
 				ID:       1,
 				Username: "user",
 			},
@@ -98,7 +98,7 @@ func (suite *PostRepositorySuite) TestRepository_GetAllPostsSuccess() {
 		},
 		{
 			ID: 2,
-			User: &model.User{
+			User: &model2.User{
 				ID:       2,
 				Username: "user2",
 			},
@@ -154,7 +154,7 @@ func (suite *PostRepositorySuite) TestRepository_GetPostByIDFailure() {
 // ======================================================================
 
 func (suite *PostRepositorySuite) TestRepository_UpdatePostSuccess() {
-	req := &model.UpdatePostReq{
+	req := &model2.UpdatePostReq{
 		Title:         strPointer("test"),
 		Body:          strPointer("test"),
 		AllowComments: boolPointer(true),
@@ -169,7 +169,7 @@ func (suite *PostRepositorySuite) TestRepository_UpdatePostSuccess() {
 }
 
 func (suite *PostRepositorySuite) TestRepository_UpdatePostWithoutSomeFields() {
-	req := &model.UpdatePostReq{
+	req := &model2.UpdatePostReq{
 		AllowComments: boolPointer(true),
 	}
 
@@ -182,7 +182,7 @@ func (suite *PostRepositorySuite) TestRepository_UpdatePostWithoutSomeFields() {
 }
 
 func (suite *PostRepositorySuite) TestRepository_UpdatePostWithoutAllFields() {
-	req := &model.UpdatePostReq{}
+	req := &model2.UpdatePostReq{}
 
 	suite.mock.ExpectExec("UPDATE posts SET WHERE (.+)").
 		WithArgs(1, 1).WillReturnResult(sqlmock.NewResult(0, 1))

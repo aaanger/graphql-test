@@ -4,8 +4,8 @@ package mocks
 
 import (
 	context "context"
+	"github.com/aaanger/graphql-test/internal/graph/model"
 
-	model "github.com/aaanger/graphql-test/graph/model"
 	mock "github.com/stretchr/testify/mock"
 )
 

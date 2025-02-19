@@ -1,11 +1,12 @@
 package main
 
 import (
+	graph2 "github.com/aaanger/graphql-test/internal/graph"
+	commentRepository "github.com/aaanger/graphql-test/internal/repository/comment"
+	postRepository "github.com/aaanger/graphql-test/internal/repository/post"
+	UserRepository "github.com/aaanger/graphql-test/internal/repository/user"
 	"github.com/aaanger/graphql-test/pkg/db"
 	"github.com/aaanger/graphql-test/pkg/middleware"
-	commentRepository "github.com/aaanger/graphql-test/repository/comment"
-	postRepository "github.com/aaanger/graphql-test/repository/post"
-	UserRepository "github.com/aaanger/graphql-test/repository/user"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"log"
@@ -17,7 +18,6 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/lru"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/aaanger/graphql-test/graph"
 	"github.com/vektah/gqlparser/v2/ast"
 )
 
@@ -50,7 +50,7 @@ func main() {
 	postRepo := postRepository.NewPostRepository(db)
 	commentRepo := commentRepository.NewCommentRepository(db)
 
-	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
+	srv := handler.New(graph2.NewExecutableSchema(graph2.Config{Resolvers: &graph2.Resolver{
 		UserRepo:    userRepo,
 		PostRepo:    postRepo,
 		CommentRepo: commentRepo,

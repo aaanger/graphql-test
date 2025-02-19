@@ -8,39 +8,39 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	model2 "github.com/aaanger/graphql-test/internal/graph/model"
 
-	"github.com/aaanger/graphql-test/graph/model"
 	"github.com/aaanger/graphql-test/pkg/middleware"
 )
 
 // Register is the resolver for the register field.
-func (r *mutationResolver) Register(ctx context.Context, req model.RegisterReq) (*model.AuthRes, error) {
+func (r *mutationResolver) Register(ctx context.Context, req model2.RegisterReq) (*model2.AuthRes, error) {
 	user, accessToken, err := r.UserRepo.Register(ctx, &req)
 	if err != nil {
 		return nil, err
 	}
 
-	return &model.AuthRes{
+	return &model2.AuthRes{
 		User:  user,
 		Token: accessToken,
 	}, nil
 }
 
 // Login is the resolver for the login field.
-func (r *mutationResolver) Login(ctx context.Context, req model.LoginReq) (*model.AuthRes, error) {
+func (r *mutationResolver) Login(ctx context.Context, req model2.LoginReq) (*model2.AuthRes, error) {
 	user, accessToken, err := r.UserRepo.Login(ctx, &req)
 	if err != nil {
 		return nil, err
 	}
 
-	return &model.AuthRes{
+	return &model2.AuthRes{
 		User:  user,
 		Token: accessToken,
 	}, nil
 }
 
 // CreatePost is the resolver for the createPost field.
-func (r *mutationResolver) CreatePost(ctx context.Context, req model.CreatePostReq) (*model.Post, error) {
+func (r *mutationResolver) CreatePost(ctx context.Context, req model2.CreatePostReq) (*model2.Post, error) {
 	userID, err := middleware.GetUserID(ctx)
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func (r *mutationResolver) CreatePost(ctx context.Context, req model.CreatePostR
 }
 
 // UpdatePost is the resolver for the updatePost field.
-func (r *mutationResolver) UpdatePost(ctx context.Context, postID int, req model.UpdatePostReq) (*model.Post, error) {
+func (r *mutationResolver) UpdatePost(ctx context.Context, postID int, req model2.UpdatePostReq) (*model2.Post, error) {
 	userID, err := middleware.GetUserID(ctx)
 	if err != nil {
 		return nil, err
@@ -90,7 +90,7 @@ func (r *mutationResolver) DeletePost(ctx context.Context, postID int) (string, 
 }
 
 // CreateComment is the resolver for the createComment field.
-func (r *mutationResolver) CreateComment(ctx context.Context, req model.CreateCommentReq) (*model.Comment, error) {
+func (r *mutationResolver) CreateComment(ctx context.Context, req model2.CreateCommentReq) (*model2.Comment, error) {
 	userID, err := middleware.GetUserID(ctx)
 	if err != nil {
 		return nil, err
@@ -114,7 +114,7 @@ func (r *mutationResolver) CreateComment(ctx context.Context, req model.CreateCo
 }
 
 // UpdateComment is the resolver for the updateComment field.
-func (r *mutationResolver) UpdateComment(ctx context.Context, req model.UpdateCommentReq) (*model.Comment, error) {
+func (r *mutationResolver) UpdateComment(ctx context.Context, req model2.UpdateCommentReq) (*model2.Comment, error) {
 	userID, err := middleware.GetUserID(ctx)
 	if err != nil {
 		return nil, err
@@ -153,12 +153,12 @@ func (r *mutationResolver) DeleteComment(ctx context.Context, commentID int) (st
 }
 
 // GetPostsByUserID is the resolver for the getPostsByUserID field.
-func (r *queryResolver) GetPostsByUserID(ctx context.Context, userID int) ([]*model.Post, error) {
+func (r *queryResolver) GetPostsByUserID(ctx context.Context, userID int) ([]*model2.Post, error) {
 	panic(fmt.Errorf("not implemented: GetPostsByUserID - getPostsByUserID"))
 }
 
 // GetPostByID is the resolver for the getPostByID field.
-func (r *queryResolver) GetPostByID(ctx context.Context, id int) (*model.Post, error) {
+func (r *queryResolver) GetPostByID(ctx context.Context, id int) (*model2.Post, error) {
 	post, err := r.PostRepo.GetPostByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -168,7 +168,7 @@ func (r *queryResolver) GetPostByID(ctx context.Context, id int) (*model.Post, e
 }
 
 // GetCommentsByPostID is the resolver for the getCommentsByPostID field.
-func (r *queryResolver) GetCommentsByPostID(ctx context.Context, postID int, first *int, last *int, after *string, before *string) (*model.CommentConnection, error) {
+func (r *queryResolver) GetCommentsByPostID(ctx context.Context, postID int, first *int, last *int, after *string, before *string) (*model2.CommentConnection, error) {
 	panic(fmt.Errorf("not implemented: GetCommentsByPostID - getCommentsByPostID"))
 }
 

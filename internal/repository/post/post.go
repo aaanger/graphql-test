@@ -4,17 +4,17 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/aaanger/graphql-test/graph/model"
+	model2 "github.com/aaanger/graphql-test/internal/graph/model"
 	"strings"
 )
 
 //go:generate mockery --name=IPostRepository
 
 type IPostRepository interface {
-	CreatePost(ctx context.Context, userID int, req *model.CreatePostReq) (*model.Post, error)
-	GetAllPostsByUserID(ctx context.Context, userID int) ([]*model.Post, error)
-	GetPostByID(ctx context.Context, id int) (*model.Post, error)
-	UpdatePost(ctx context.Context, userID, postID int, req *model.UpdatePostReq) error
+	CreatePost(ctx context.Context, userID int, req *model2.CreatePostReq) (*model2.Post, error)
+	GetAllPostsByUserID(ctx context.Context, userID int) ([]*model2.Post, error)
+	GetPostByID(ctx context.Context, id int) (*model2.Post, error)
+	UpdatePost(ctx context.Context, userID, postID int, req *model2.UpdatePostReq) error
 	DeletePost(ctx context.Context, userID, postID int) error
 }
 
@@ -28,8 +28,8 @@ func NewPostRepository(db *sql.DB) *PostRepository {
 	}
 }
 
-func (r *PostRepository) CreatePost(ctx context.Context, userID int, req *model.CreatePostReq) (*model.Post, error) {
-	post := model.Post{
+func (r *PostRepository) CreatePost(ctx context.Context, userID int, req *model2.CreatePostReq) (*model2.Post, error) {
+	post := model2.Post{
 		Title:         req.Title,
 		Body:          req.Body,
 		AllowComments: req.AllowComments,
@@ -43,7 +43,7 @@ func (r *PostRepository) CreatePost(ctx context.Context, userID int, req *model.
 		return nil, err
 	}
 
-	user := model.User{
+	user := model2.User{
 		ID: userID,
 	}
 	userRow := r.db.QueryRowContext(ctx, `SELECT username FROM users WHERE id = $1;`, userID)
@@ -54,8 +54,8 @@ func (r *PostRepository) CreatePost(ctx context.Context, userID int, req *model.
 	return &post, nil
 }
 
-func (r *PostRepository) GetAllPostsByUserID(ctx context.Context, userID int) ([]*model.Post, error) {
-	var posts []*model.Post
+func (r *PostRepository) GetAllPostsByUserID(ctx context.Context, userID int) ([]*model2.Post, error) {
+	var posts []*model2.Post
 
 	rows, err := r.db.QueryContext(ctx, `SELECT (p.id, p.title, p.body, p.allow_comments, p.created_at, u.id, u.username) 
 												FROM posts p INNER JOIN users u ON p.user_id = u.id 
@@ -66,8 +66,8 @@ func (r *PostRepository) GetAllPostsByUserID(ctx context.Context, userID int) ([
 	}
 
 	for rows.Next() {
-		var post model.Post
-		var user model.User
+		var post model2.Post
+		var user model2.User
 		err = rows.Scan(&post.ID, &post.Title, &post.Body, &post.AllowComments, &post.CreatedAt, &user.ID, &user.Username)
 		if err != nil {
 			return nil, err
@@ -80,9 +80,9 @@ func (r *PostRepository) GetAllPostsByUserID(ctx context.Context, userID int) ([
 	return posts, nil
 }
 
-func (r *PostRepository) GetPostByID(ctx context.Context, id int) (*model.Post, error) {
-	var post model.Post
-	var user model.User
+func (r *PostRepository) GetPostByID(ctx context.Context, id int) (*model2.Post, error) {
+	var post model2.Post
+	var user model2.User
 
 	row := r.db.QueryRowContext(ctx, `SELECT (p.id, p.title, p.body, p.created_at, p.allow_comments, u.id, u.username) 
 											FROM posts p INNER JOIN users u ON p.user_id = u.id 
@@ -98,7 +98,7 @@ func (r *PostRepository) GetPostByID(ctx context.Context, id int) (*model.Post, 
 	return &post, nil
 }
 
-func (r *PostRepository) UpdatePost(ctx context.Context, userID, postID int, req *model.UpdatePostReq) error {
+func (r *PostRepository) UpdatePost(ctx context.Context, userID, postID int, req *model2.UpdatePostReq) error {
 	keys := make([]string, 0)
 	values := make([]interface{}, 0)
 

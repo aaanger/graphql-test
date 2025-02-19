@@ -1,9 +1,9 @@
 package graph
 
 import (
-	"github.com/aaanger/graphql-test/repository/comment"
-	"github.com/aaanger/graphql-test/repository/post"
-	"github.com/aaanger/graphql-test/repository/user"
+	"github.com/aaanger/graphql-test/internal/repository/comment"
+	"github.com/aaanger/graphql-test/internal/repository/post"
+	"github.com/aaanger/graphql-test/internal/repository/user"
 )
 
 // This file will not be regenerated automatically.

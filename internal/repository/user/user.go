@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 	"database/sql"
-	"github.com/aaanger/graphql-test/graph/model"
+	model2 "github.com/aaanger/graphql-test/internal/graph/model"
 	"github.com/aaanger/graphql-test/pkg/jwt"
 	"golang.org/x/crypto/bcrypt"
 	"strings"
@@ -12,8 +12,8 @@ import (
 //go:generate mockery --name=IUserRepository
 
 type IUserRepository interface {
-	Register(ctx context.Context, req *model.RegisterReq) (*model.User, string, error)
-	Login(ctx context.Context, req *model.LoginReq) (*model.User, string, error)
+	Register(ctx context.Context, req *model2.RegisterReq) (*model2.User, string, error)
+	Login(ctx context.Context, req *model2.LoginReq) (*model2.User, string, error)
 }
 
 type UserRepository struct {
@@ -26,7 +26,7 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 	}
 }
 
-func (r *UserRepository) Register(ctx context.Context, req *model.RegisterReq) (*model.User, string, error) {
+func (r *UserRepository) Register(ctx context.Context, req *model2.RegisterReq) (*model2.User, string, error) {
 	hashedBytes, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, "", err
@@ -34,7 +34,7 @@ func (r *UserRepository) Register(ctx context.Context, req *model.RegisterReq) (
 
 	passwordHash := string(hashedBytes)
 
-	user := model.User{
+	user := model2.User{
 		Email:    strings.ToLower(req.Email),
 		Username: req.Username,
 		Password: passwordHash,
@@ -55,8 +55,8 @@ func (r *UserRepository) Register(ctx context.Context, req *model.RegisterReq) (
 	return &user, accessToken, nil
 }
 
-func (r *UserRepository) Login(ctx context.Context, req *model.LoginReq) (*model.User, string, error) {
-	user := model.User{
+func (r *UserRepository) Login(ctx context.Context, req *model2.LoginReq) (*model2.User, string, error) {
+	user := model2.User{
 		Email: strings.ToLower(req.Email),
 	}
 

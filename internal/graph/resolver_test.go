@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/aaanger/graphql-test/graph/model"
-	commentMocks "github.com/aaanger/graphql-test/repository/comment/mocks"
-	postMocks "github.com/aaanger/graphql-test/repository/post/mocks"
-	userMocks "github.com/aaanger/graphql-test/repository/user/mocks"
+	model2 "github.com/aaanger/graphql-test/internal/graph/model"
+	commentMocks "github.com/aaanger/graphql-test/internal/repository/comment/mocks"
+	postMocks "github.com/aaanger/graphql-test/internal/repository/post/mocks"
+	userMocks "github.com/aaanger/graphql-test/internal/repository/user/mocks"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 	"math/rand"
@@ -54,13 +54,13 @@ func TestSchemaResolverSuite(t *testing.T) {
 // ==================================================================
 
 func (suite *SchemaResolverSuite) TestResolver_RegisterSuccess() {
-	req := model.RegisterReq{
+	req := model2.RegisterReq{
 		Email:    "test",
 		Username: "test",
 		Password: "test",
 	}
 
-	suite.userMock.On("Register", mock.Anything, &req).Return(&model.User{
+	suite.userMock.On("Register", mock.Anything, &req).Return(&model2.User{
 		ID:       1,
 		Email:    "test",
 		Username: "test",
@@ -75,7 +75,7 @@ func (suite *SchemaResolverSuite) TestResolver_RegisterSuccess() {
 }
 
 func (suite *SchemaResolverSuite) TestResolver_RegisterFailure() {
-	req := model.RegisterReq{
+	req := model2.RegisterReq{
 		Email:    "test",
 		Username: "test",
 		Password: "test",
@@ -90,12 +90,12 @@ func (suite *SchemaResolverSuite) TestResolver_RegisterFailure() {
 }
 
 func (suite *SchemaResolverSuite) TestResolver_LoginSuccess() {
-	req := model.LoginReq{
+	req := model2.LoginReq{
 		Email:    "test",
 		Password: "test",
 	}
 
-	suite.userMock.On("Login", mock.Anything, &req).Return(&model.User{
+	suite.userMock.On("Login", mock.Anything, &req).Return(&model2.User{
 		ID:       1,
 		Email:    "test",
 		Username: "test",
@@ -110,7 +110,7 @@ func (suite *SchemaResolverSuite) TestResolver_LoginSuccess() {
 }
 
 func (suite *SchemaResolverSuite) TestResolver_LoginFailure() {
-	req := model.LoginReq{
+	req := model2.LoginReq{
 		Email:    "test",
 		Password: "test",
 	}
@@ -126,7 +126,7 @@ func (suite *SchemaResolverSuite) TestResolver_LoginFailure() {
 // ===============================================================
 
 func (suite *SchemaResolverSuite) TestResolver_CreatePostSuccess() {
-	req := model.CreatePostReq{
+	req := model2.CreatePostReq{
 		Title:         "test",
 		Body:          "test",
 		AllowComments: true,
@@ -135,9 +135,9 @@ func (suite *SchemaResolverSuite) TestResolver_CreatePostSuccess() {
 	ctx := context.WithValue(context.Background(), "userID", 1)
 
 	suite.postMock.On("CreatePost", ctx, 1, &req).
-		Return(&model.Post{
+		Return(&model2.Post{
 			ID: 1,
-			User: &model.User{
+			User: &model2.User{
 				ID: 1,
 			},
 			Title:         req.Title,
@@ -153,7 +153,7 @@ func (suite *SchemaResolverSuite) TestResolver_CreatePostSuccess() {
 }
 
 func (suite *SchemaResolverSuite) TestResolver_CreatePostUnauthorized() {
-	req := model.CreatePostReq{
+	req := model2.CreatePostReq{
 		Title:         "test",
 		Body:          "test",
 		AllowComments: true,
@@ -166,7 +166,7 @@ func (suite *SchemaResolverSuite) TestResolver_CreatePostUnauthorized() {
 }
 
 func (suite *SchemaResolverSuite) TestResolver_CreatePostFailure() {
-	req := model.CreatePostReq{
+	req := model2.CreatePostReq{
 		Title:         "test",
 		Body:          "test",
 		AllowComments: true,
@@ -186,7 +186,7 @@ func (suite *SchemaResolverSuite) TestResolver_CreatePostFailure() {
 // ==================================================================
 
 func (suite *SchemaResolverSuite) TestResolver_UpdatePostSuccess() {
-	req := model.UpdatePostReq{
+	req := model2.UpdatePostReq{
 		Title:         strPointer("test"),
 		Body:          strPointer("test"),
 		AllowComments: boolPointer(true),
@@ -198,9 +198,9 @@ func (suite *SchemaResolverSuite) TestResolver_UpdatePostSuccess() {
 		Return(nil)
 
 	suite.postMock.On("GetPostByID", ctx, 1).
-		Return(&model.Post{
+		Return(&model2.Post{
 			ID: 1,
-			User: &model.User{
+			User: &model2.User{
 				ID: 1,
 			},
 			Title:         "test",
@@ -216,7 +216,7 @@ func (suite *SchemaResolverSuite) TestResolver_UpdatePostSuccess() {
 }
 
 func (suite *SchemaResolverSuite) TestResolver_UpdatePostUnauthorized() {
-	req := model.UpdatePostReq{
+	req := model2.UpdatePostReq{
 		Title:         strPointer("test"),
 		Body:          strPointer("test"),
 		AllowComments: boolPointer(true),
@@ -229,7 +229,7 @@ func (suite *SchemaResolverSuite) TestResolver_UpdatePostUnauthorized() {
 }
 
 func (suite *SchemaResolverSuite) TestResolver_UpdatePostFailure() {
-	req := model.UpdatePostReq{
+	req := model2.UpdatePostReq{
 		Title:         strPointer("test"),
 		Body:          strPointer("test"),
 		AllowComments: boolPointer(true),
@@ -280,30 +280,30 @@ func (suite *SchemaResolverSuite) TestResolver_DeletePostFailure() {
 // ==============================================================
 
 func (suite *SchemaResolverSuite) TestResolver_GetPostsByUserIDSuccess() {
-	post1 := &model.Post{
+	post1 := &model2.Post{
 		ID:            1,
 		Title:         "test1",
 		Body:          "test1",
 		AllowComments: true,
-		User: &model.User{
+		User: &model2.User{
 			ID:       5,
 			Username: "test",
 		},
 	}
 
-	post2 := &model.Post{
+	post2 := &model2.Post{
 		ID:            1,
 		Title:         "test2",
 		Body:          "test2",
 		AllowComments: true,
-		User: &model.User{
+		User: &model2.User{
 			ID:       5,
 			Username: "test",
 		},
 	}
 
 	suite.postMock.On("GetAllPostsByUserID", mock.Anything, 5).
-		Return([]*model.Post{post1, post2}, nil)
+		Return([]*model2.Post{post1, post2}, nil)
 
 	posts, err := suite.queryResolver.GetPosts(context.Background(), 5)
 
@@ -336,12 +336,12 @@ func (suite *SchemaResolverSuite) TestResolver_GetPostsByUserIDFailure() {
 
 func (suite *SchemaResolverSuite) TestResolver_GetPostByIDSuccess() {
 	suite.postMock.On("GetPostByID", mock.Anything, 1).
-		Return(&model.Post{
+		Return(&model2.Post{
 			ID:            1,
 			Title:         "test1",
 			Body:          "test1",
 			AllowComments: true,
-			User: &model.User{
+			User: &model2.User{
 				ID:       5,
 				Username: "test",
 			},
@@ -375,7 +375,7 @@ func (suite *SchemaResolverSuite) TestResolver_GetPostByIDFailure() {
 func (suite *SchemaResolverSuite) TestResolver_CreateCommentSuccess() {
 	ctx := context.WithValue(context.Background(), "userID", 1)
 
-	req := model.CreateCommentReq{
+	req := model2.CreateCommentReq{
 		PostID:          1,
 		ParentCommentID: nil,
 		Body:            "test",
@@ -383,7 +383,7 @@ func (suite *SchemaResolverSuite) TestResolver_CreateCommentSuccess() {
 
 	suite.commentMock.On("IsCommentsAllowed", ctx, 1).Return(true, nil)
 	suite.commentMock.On("CreateComment", ctx, 1, &req).
-		Return(&model.Comment{
+		Return(&model2.Comment{
 			ID:        1,
 			PostID:    1,
 			UserID:    1,
@@ -398,7 +398,7 @@ func (suite *SchemaResolverSuite) TestResolver_CreateCommentSuccess() {
 }
 
 func (suite *SchemaResolverSuite) TestResolver_CreateCommentUnauthorized() {
-	req := model.CreateCommentReq{
+	req := model2.CreateCommentReq{
 		PostID:          1,
 		ParentCommentID: nil,
 		Body:            "test",
@@ -413,7 +413,7 @@ func (suite *SchemaResolverSuite) TestResolver_CreateCommentUnauthorized() {
 func (suite *SchemaResolverSuite) TestResolver_CreateCommentNotAllowed() {
 	ctx := context.WithValue(context.Background(), "userID", 1)
 
-	req := model.CreateCommentReq{
+	req := model2.CreateCommentReq{
 		PostID:          1,
 		ParentCommentID: nil,
 		Body:            "test",
@@ -430,7 +430,7 @@ func (suite *SchemaResolverSuite) TestResolver_CreateCommentNotAllowed() {
 func (suite *SchemaResolverSuite) TestResolver_CreateCommentMoreThan2000Chars() {
 	ctx := context.WithValue(context.Background(), "userID", 1)
 
-	req := model.CreateCommentReq{
+	req := model2.CreateCommentReq{
 		PostID:          1,
 		ParentCommentID: nil,
 		Body:            generateStringWith2000Chars(),
@@ -447,7 +447,7 @@ func (suite *SchemaResolverSuite) TestResolver_CreateCommentMoreThan2000Chars() 
 func (suite *SchemaResolverSuite) TestResolver_CreateCommentFailure() {
 	ctx := context.WithValue(context.Background(), "userID", 1)
 
-	req := model.CreateCommentReq{
+	req := model2.CreateCommentReq{
 		PostID:          1,
 		ParentCommentID: nil,
 		Body:            "test",
@@ -468,7 +468,7 @@ func (suite *SchemaResolverSuite) TestResolver_CreateCommentFailure() {
 func (suite *SchemaResolverSuite) TestResolver_UpdateCommentSuccess() {
 	ctx := context.WithValue(context.Background(), "userID", 1)
 
-	req := model.UpdateCommentReq{
+	req := model2.UpdateCommentReq{
 		ID:   1,
 		Body: "test",
 	}
@@ -476,7 +476,7 @@ func (suite *SchemaResolverSuite) TestResolver_UpdateCommentSuccess() {
 	suite.commentMock.On("UpdateComment", ctx, 1, &req).Return(nil)
 
 	suite.commentMock.On("GetCommentByID", ctx, 1).
-		Return(&model.Comment{
+		Return(&model2.Comment{
 			ID:        1,
 			PostID:    1,
 			UserID:    1,
@@ -491,7 +491,7 @@ func (suite *SchemaResolverSuite) TestResolver_UpdateCommentSuccess() {
 }
 
 func (suite *SchemaResolverSuite) TestResolver_UpdateCommentUnauthorized() {
-	req := model.UpdateCommentReq{
+	req := model2.UpdateCommentReq{
 		ID:   1,
 		Body: "test",
 	}
@@ -505,7 +505,7 @@ func (suite *SchemaResolverSuite) TestResolver_UpdateCommentUnauthorized() {
 func (suite *SchemaResolverSuite) TestResolver_UpdateCommentMoreThan2000Chars() {
 	ctx := context.WithValue(context.Background(), "userID", 1)
 
-	req := model.UpdateCommentReq{
+	req := model2.UpdateCommentReq{
 		ID:   1,
 		Body: generateStringWith2000Chars(),
 	}
@@ -519,7 +519,7 @@ func (suite *SchemaResolverSuite) TestResolver_UpdateCommentMoreThan2000Chars() 
 func (suite *SchemaResolverSuite) TestResolver_UpdateCommentFailure() {
 	ctx := context.WithValue(context.Background(), "userID", 1)
 
-	req := model.UpdateCommentReq{
+	req := model2.UpdateCommentReq{
 		ID:   1,
 		Body: "test",
 	}
@@ -535,7 +535,7 @@ func (suite *SchemaResolverSuite) TestResolver_UpdateCommentFailure() {
 func (suite *SchemaResolverSuite) TestResolver_UpdateCommentGetCommentFailure() {
 	ctx := context.WithValue(context.Background(), "userID", 1)
 
-	req := model.UpdateCommentReq{
+	req := model2.UpdateCommentReq{
 		ID:   1,
 		Body: "test",
 	}
@@ -591,10 +591,10 @@ func (suite *SchemaResolverSuite) TestResolver_GetCommentsSuccess() {
 	var after *string
 	var before *string
 
-	comments := &model.CommentConnection{
-		Edges: []*model.CommentEdge{
+	comments := &model2.CommentConnection{
+		Edges: []*model2.CommentEdge{
 			{
-				Node: &model.Comment{
+				Node: &model2.Comment{
 					ID:     1,
 					Body:   "test1",
 					UserID: 1,
@@ -602,7 +602,7 @@ func (suite *SchemaResolverSuite) TestResolver_GetCommentsSuccess() {
 				},
 			},
 			{
-				Node: &model.Comment{
+				Node: &model2.Comment{
 					ID:     2,
 					Body:   "test2",
 					UserID: 1,
@@ -610,7 +610,7 @@ func (suite *SchemaResolverSuite) TestResolver_GetCommentsSuccess() {
 				},
 			},
 		},
-		PageInfo: &model.PageInfo{
+		PageInfo: &model2.PageInfo{
 			StartCursor: nil,
 			EndCursor:   nil,
 			HasNextPage: false,
@@ -641,10 +641,10 @@ func (suite *SchemaResolverSuite) TestResolver_GetCommentsWithPagination() {
 	afterStr := after.Format(time.RFC3339)
 	beforeStr := before.Format(time.RFC3339)
 
-	var commentsList []*model.CommentEdge
+	var commentsList []*model2.CommentEdge
 	for i := 1; i <= 15; i++ {
-		commentsList = append(commentsList, &model.CommentEdge{
-			Node: &model.Comment{
+		commentsList = append(commentsList, &model2.CommentEdge{
+			Node: &model2.Comment{
 				ID:        i,
 				Body:      fmt.Sprintf("Comment %d", i),
 				UserID:    1,
@@ -659,9 +659,9 @@ func (suite *SchemaResolverSuite) TestResolver_GetCommentsWithPagination() {
 	startCursor := expectedComments[0].Node.CreatedAt.Format(time.RFC3339)
 	endCursor := expectedComments[len(expectedComments)-1].Node.CreatedAt.Format(time.RFC3339)
 
-	comments := &model.CommentConnection{
+	comments := &model2.CommentConnection{
 		Edges: expectedComments,
-		PageInfo: &model.PageInfo{
+		PageInfo: &model2.PageInfo{
 			StartCursor: &startCursor,
 			EndCursor:   &endCursor,
 			HasNextPage: true,
@@ -710,9 +710,9 @@ func (suite *SchemaResolverSuite) TestResolver_GetCommentsEmpty() {
 	var after *string
 	var before *string
 
-	comments := &model.CommentConnection{
-		Edges: []*model.CommentEdge{},
-		PageInfo: &model.PageInfo{
+	comments := &model2.CommentConnection{
+		Edges: []*model2.CommentEdge{},
+		PageInfo: &model2.PageInfo{
 			StartCursor: nil,
 			EndCursor:   nil,
 			HasNextPage: false,

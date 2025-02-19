@@ -1,5 +1,5 @@
 build:
-	docker compose build
+	build/docker-compose.yml build
 run:
 	docker compose up
 migrate:

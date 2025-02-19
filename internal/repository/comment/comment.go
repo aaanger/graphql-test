@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/aaanger/graphql-test/graph/model"
+	"github.com/aaanger/graphql-test/internal/graph/model"
 	"strings"
 	"time"
 )
